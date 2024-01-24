@@ -11,18 +11,25 @@
 #include "ModbusMessage.h"
 
 #if HAS_FREERTOS
+#if defined(ESP32)
 extern "C" {
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 }
+#elif defined(PICO_RP2040)
+#include <FreeRTOS.h>
+#include <task.h>
+#endif
 #elif IS_LINUX
 #include <pthread.h>
 #endif
 
 #if USE_MUTEX
 #include <mutex>                    // NOLINT
+#if defined(ESP32)
 using std::mutex;
 using std::lock_guard;
+#endif
 #endif
 
 typedef std::function<void(ModbusMessage msg, uint32_t token)> MBOnData;
@@ -108,10 +115,14 @@ protected:
   static uint16_t instanceCounter; // Number of ModbusClients created
   std::map<uint32_t, ModbusMessage> syncResponse; // Map to hold response messages on synchronous requests
 #if USE_MUTEX
+#if defined(ESP32)
   std::mutex syncRespM;            // Mutex protecting syncResponse map against race conditions
   std::mutex countAccessM;         // Mutex protecting access to the message and error counts
+#elif defined(PICO_RP2040)
+  CoreMutex  syncRespM;            // Mutex protecting syncResponse map against race conditions
+  CoreMutex  countAccessM;         // Mutex protecting access to the message and error counts
 #endif
-
+#endif
   // Let any ModbusBridge class use protected members
   template<typename SERVERCLASS> friend class ModbusBridge;
 };

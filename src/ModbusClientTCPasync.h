@@ -5,12 +5,15 @@
 #ifndef _MODBUS_CLIENT_TCP_ASYNC_H
 #define _MODBUS_CLIENT_TCP_ASYNC_H
 #include <Arduino.h>
+
 #if defined ESP32
 #include <AsyncTCP.h>
 #elif defined ESP8266
 #include <ESPAsyncTCP.h>
 #endif
+
 #include "options.h"
+#if defined(ESP32) || defined(ESP8266)
 #include "ModbusMessage.h"
 #include "ModbusClient.h"
 #include <list>
@@ -152,4 +155,5 @@ protected:
   uint16_t MTA_port;
 };
 
+#endif
 #endif

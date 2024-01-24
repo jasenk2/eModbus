@@ -5,6 +5,10 @@
 #ifndef _EMODBUS_OPTIONS_H
 #define _EMODBUS_OPTIONS_H
 
+#ifndef PICO_RP2040
+#define PICO_RP2040 1
+#endif
+
 /* === ESP32 DEFINITIONS AND MACROS === */
 #if defined(ESP32) 
 #include <Arduino.h>
@@ -24,6 +28,17 @@ const unsigned int CLIENT_TASK_STACK = 4096;
 #define HAS_ETHERNET 0
 #define IS_LINUX 0
 #define NEED_UART_PATCH 0
+
+/* === PICO2040 DEFINITIONS AND MACROS === */
+#elif defined(PICO_RP2040)
+#include <Arduino.h>
+#define USE_MUTEX 1
+#define HAS_FREERTOS 1
+#define HAS_ETHERNET 0
+#define IS_LINUX 0
+#define NEED_UART_PATCH 0
+const unsigned int SERVER_TASK_STACK = 4096;
+const unsigned int CLIENT_TASK_STACK = 4096;
 
 /* === LINUX DEFINITIONS AND MACROS === */
 #elif defined(__linux__)
@@ -53,7 +68,11 @@ typedef std::chrono::steady_clock clk;
 
 /* === COMMON MACROS === */
 #if USE_MUTEX
+#ifdef ESP32
 #define LOCK_GUARD(x,y) std::lock_guard<std::mutex> x(y);
+#elif defined(PICO_RP2040)
+#define LOCK_GUARD(x,y) CoreMutex();    
+#endif
 #else
 #define LOCK_GUARD(x,y)
 #endif

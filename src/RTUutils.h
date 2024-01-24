@@ -54,8 +54,15 @@ public:
 
 // Necessary preparations for a HardwareSerial
 static void prepareHardwareSerial(HardwareSerial& s, uint16_t bufferSize = 260) {
+#if defined(ESP32)  
   s.setRxBufferSize(bufferSize);
   s.setTxBufferSize(bufferSize);
+#elif defined(PICO_RP2040) 
+  if (s == Serial1)
+  {
+    uart_set_fifo_enabled(uart0,false);
+  }
+#endif 
 }
 
 protected:

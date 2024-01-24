@@ -6,6 +6,7 @@
 
 #if HAS_FREERTOS || IS_LINUX
 
+#if defined(ESP32) ||defined(ESP8266)
 #undef LOCAL_LOG_LEVEL
 // #define LOCAL_LOG_LEVEL LOG_LEVEL_VERBOSE
 #include "Logging.h"
@@ -418,4 +419,5 @@ ModbusMessage ModbusClientTCP::receive(RequestEntry *request) {
   return response;
 }
 
+#endif
 #endif

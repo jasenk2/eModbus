@@ -11,7 +11,7 @@
 #if HAS_FREERTOS
 #include <Arduino.h>
 #endif
-
+#if defined(ESP32) ||defined(ESP8266)
 #include "ModbusClient.h"
 #include "Client.h"
 #include <queue>
@@ -190,3 +190,4 @@ protected:
 #endif  // HAS_FREERTOS
 
 #endif  // INCLUDE GUARD
+#endif //ESP32

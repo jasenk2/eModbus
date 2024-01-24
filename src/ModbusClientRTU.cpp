@@ -63,7 +63,14 @@ void ModbusClientRTU::begin(Stream& serial, uint32_t baudRate, int coreID) {
 void ModbusClientRTU::begin(HardwareSerial& serial, int coreID) {
   MR_serial = &serial;
   uint32_t baudRate = serial.baudRate();
+  #if defined(ESP32)
   serial.setRxFIFOFull(1);
+  #elif defined(PICO_RP2040)
+  if (serial == Serial1)
+  {
+    uart_set_fifo_enabled(uart0,false);
+  }
+  #endif
   doBegin(baudRate, coreID);
 }
 
@@ -81,7 +88,11 @@ void ModbusClientRTU::doBegin(uint32_t baudRate, int coreID) {
   char taskName[18];
   snprintf(taskName, 18, "Modbus%02XRTU", instanceCounter);
   // Start task to handle the queue
+#if defined(ESP32)
   xTaskCreatePinnedToCore((TaskFunction_t)&handleConnection, taskName, CLIENT_TASK_STACK, this, 6, &worker, coreID >= 0 ? coreID : NULL);
+#elif defined(PICO_RP2040)
+  xTaskCreateAffinitySet((TaskFunction_t)&handleConnection, taskName, CLIENT_TASK_STACK, this, 6, coreID >= 0 ? coreID : NULL, &worker);
+#endif  
 
   LOG_D("Client task %d started. Interval=%d\n", (uint32_t)worker, MR_interval);
 }
