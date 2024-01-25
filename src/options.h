@@ -4,8 +4,7 @@
 // =================================================================================================
 #ifndef _EMODBUS_OPTIONS_H
 #define _EMODBUS_OPTIONS_H
-
-#ifndef PICO_RP2040
+#ifdef TARGET_RP2040
 #define PICO_RP2040 1
 #endif
 
