@@ -157,10 +157,11 @@ ModbusMessage ModbusServer::localRequest(ModbusMessage msg) {
 // Constructor
 ModbusServer::ModbusServer() :
   messageCount(0),
-  errorCount(0) { }
+  errorCount(0) { mutex_init(&m); }
 
 // Destructor
 ModbusServer::~ModbusServer() {
+  mutex_exit(&m);
 }
 
 // listServer: Print out all mapped server/FC combinations

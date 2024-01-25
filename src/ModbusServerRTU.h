@@ -14,10 +14,15 @@
 #include "ModbusServer.h"
 #include "RTUutils.h"
 
+#if defined(ESP32)
 extern "C" {
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 }
+#elif defined(PICO_RP2040)
+#include <FreeRTOS.h>
+#include <task.h>
+#endif
 
 // Specal function signature for broadcast or sniffer listeners
 using MSRlistener = std::function<void(ModbusMessage msg)>;

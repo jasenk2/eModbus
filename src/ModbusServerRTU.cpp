@@ -72,8 +72,16 @@ void ModbusServerRTU::begin(Stream& serial, uint32_t baudRate, int coreID) {
 // start: create task with RTU server - HardwareSerial versions
 void ModbusServerRTU::begin(HardwareSerial& serial, int coreID) {
   MSRserial = &serial;
+#if defined(ESP32)  
   uint32_t baudRate = serial.baudRate();
   serial.setRxFIFOFull(1);
+#elif defined(PICO_RP2040)
+  uint32_t baudRate = 9600;
+  if(Serial1 == serial)
+    Serial1.setFIFOSize(1);
+  else
+    Serial2.setFIFOSize(1);
+#endif  
   doBegin(baudRate, coreID);
 }
 
@@ -89,8 +97,11 @@ void ModbusServerRTU::doBegin(uint32_t baudRate, int coreID) {
   snprintf(taskName, 18, "MBsrv%02XRTU", instanceCounter);
 
   // Start task to handle the client
+#if defined(ESP32)  
   xTaskCreatePinnedToCore((TaskFunction_t)&serve, taskName, SERVER_TASK_STACK, this, 8, &serverTask, coreID >= 0 ? coreID : NULL);
-
+#elif defined(PICO_RP2040)
+  xTaskCreateAffinitySet((TaskFunction_t)&serve, taskName, SERVER_TASK_STACK, this, 8, coreID >= 0 ? coreID : NULL, &serverTask);
+#endif
   LOG_D("Server task %d started. Interval=%d\n", (uint32_t)serverTask, MSRinterval);
 }
 

@@ -56,20 +56,29 @@ ModbusClientRTU::~ModbusClientRTU() {
 // begin: start worker task - general version
 void ModbusClientRTU::begin(Stream& serial, uint32_t baudRate, int coreID) {
   MR_serial = &serial;
+
   doBegin(baudRate, coreID);
 }
 
 // begin: start worker task - HardwareSerial version
 void ModbusClientRTU::begin(HardwareSerial& serial, int coreID) {
   MR_serial = &serial;
-  uint32_t baudRate = serial.baudRate();
   #if defined(ESP32)
   serial.setRxFIFOFull(1);
+  uint32_t baudRate = serial.baudRate();
   #elif defined(PICO_RP2040)
-  if (serial == Serial1)
+  serial.end();
+  uint32_t baudRate = 9600;
+  
+  if (Serial1 == serial)
   {
-    uart_set_fifo_enabled(uart0,false);
+    Serial1.setFIFOSize(1);
   }
+  else 
+  {
+    Serial2.setFIFOSize(1);
+  }
+  serial.begin(baudRate);
   #endif
   doBegin(baudRate, coreID);
 }

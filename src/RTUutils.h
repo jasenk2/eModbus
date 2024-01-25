@@ -59,9 +59,9 @@ static void prepareHardwareSerial(HardwareSerial& s, uint16_t bufferSize = 260) 
   s.setTxBufferSize(bufferSize);
 #elif defined(PICO_RP2040) 
   if (s == Serial1)
-  {
-    uart_set_fifo_enabled(uart0,false);
-  }
+    Serial1.setFIFOSize(bufferSize);
+  else
+    Serial2.setFIFOSize(bufferSize);
 #endif 
 }
 

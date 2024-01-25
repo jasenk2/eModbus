@@ -15,7 +15,7 @@
 #include <vector>
 
 #include <Arduino.h>  // for millis()
-
+#ifndef PICO_RP2040
 #if defined(ESP32)
 #include <AsyncTCP.h>
 #elif defined(ESP8266)
@@ -51,7 +51,11 @@ class ModbusServerTCPasync : public ModbusServer {
     Modbus::Error error;
     std::queue<ModbusMessage*> outbox;
     #if USE_MUTEX
+    #if defined(ESP32)
     std::mutex obLock;  // outbox protection
+    #elif defined(PICO_RP2040)
+    mutex obLock;  // outbox protection
+    #endif
     #endif
   };
 
@@ -85,8 +89,13 @@ class ModbusServerTCPasync : public ModbusServer {
   uint8_t maxNoClients;
   uint32_t idle_timeout;
   #if USE_MUTEX
+  #if defined(ESP32)
   std::mutex cListLock;  // client list protection
+  #elif defined(PICO_RP2040)
+  mutex cListLock;
   #endif
+  #endif //USE_MUTEX
 };
 
 #endif
+#endif //PICO

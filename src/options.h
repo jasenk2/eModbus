@@ -71,7 +71,7 @@ typedef std::chrono::steady_clock clk;
 #ifdef ESP32
 #define LOCK_GUARD(x,y) std::lock_guard<std::mutex> x(y);
 #elif defined(PICO_RP2040)
-#define LOCK_GUARD(x,y) CoreMutex();    
+#define LOCK_GUARD(x,y) mutex_try_enter(&y, nullptr)
 #endif
 #else
 #define LOCK_GUARD(x,y)

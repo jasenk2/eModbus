@@ -18,9 +18,13 @@
 #include "ModbusMessage.h"
 
 #if USE_MUTEX
+#if defined(ESP32)
 using std::mutex;
 using std::lock_guard;
-#endif
+#elif defined(PICO_RP2040)
+//used pico core C mutex structure
+#endif 
+#endif //USE_MUTEX
 
 // Standard response variants for "no response" and "echo the request"
 const ModbusMessage NIL_RESPONSE (std::vector<uint8_t>{0xFF, 0xF0});

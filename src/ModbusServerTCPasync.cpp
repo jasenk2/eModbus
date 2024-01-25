@@ -4,6 +4,7 @@
 // =================================================================================================
 
 #include "ModbusServerTCPasync.h"
+#ifndef PICO_RP2040
 #define LOCAL_LOG_LEVEL LOG_LEVEL_VERBOSE
 // #undef LOCAL_LOG_LEVEL
 #include "Logging.h"
@@ -266,3 +267,4 @@ void ModbusServerTCPasync::onClientDisconnect(mb_client* client) {
   delete client;
   LOG_D("nr clients: %d\n", clients.size());
 }
+#endif //PICO

@@ -119,8 +119,8 @@ protected:
   std::mutex syncRespM;            // Mutex protecting syncResponse map against race conditions
   std::mutex countAccessM;         // Mutex protecting access to the message and error counts
 #elif defined(PICO_RP2040)
-  CoreMutex  syncRespM;            // Mutex protecting syncResponse map against race conditions
-  CoreMutex  countAccessM;         // Mutex protecting access to the message and error counts
+  mutex  syncRespM;            // Mutex protecting syncResponse map against race conditions
+  mutex  countAccessM;         // Mutex protecting access to the message and error counts
 #endif
 #endif
   // Let any ModbusBridge class use protected members
