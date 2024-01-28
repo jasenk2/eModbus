@@ -157,11 +157,17 @@ ModbusMessage ModbusServer::localRequest(ModbusMessage msg) {
 // Constructor
 ModbusServer::ModbusServer() :
   messageCount(0),
-  errorCount(0) { mutex_init(&m); }
+  errorCount(0) { 
+#ifdef PICO_RP2040
+    mutex_init(&m);
+#endif     
+    }
 
 // Destructor
 ModbusServer::~ModbusServer() {
+#ifdef PICO_RP2040  
   mutex_exit(&m);
+#endif  
 }
 
 // listServer: Print out all mapped server/FC combinations
