@@ -4,8 +4,10 @@
 // =================================================================================================
 #ifndef _EMODBUS_OPTIONS_H
 #define _EMODBUS_OPTIONS_H
-#ifdef TARGET_RP2040
+#if defined(ARDUINO_ARCH_RP2040) && !defined(__MBED__)
+#ifndef PICO_RP2040 
 #define PICO_RP2040 1
+#endif
 #endif
 
 /* === ESP32 DEFINITIONS AND MACROS === */
