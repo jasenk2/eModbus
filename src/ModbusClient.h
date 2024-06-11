@@ -19,6 +19,9 @@ extern "C" {
 #elif defined(PICO_RP2040)
 #include <FreeRTOS.h>
 #include <task.h>
+#elif defined(STM32H7xx)
+#include <STM32FreeRTOS.h>
+#include <task.h>
 #endif
 #elif IS_LINUX
 #include <pthread.h>
@@ -51,13 +54,13 @@ public:
   // matching ModbusMessage::setMessage() call
   template <typename... Args>
   ModbusMessage syncRequest(uint32_t token, Args&&... args) {
-    Error rc = SUCCESS;
+    Error rc = Modbus::Error::SUCCESS;
     // Create request, if valid
     ModbusMessage m;
     rc = m.setMessage(std::forward<Args>(args) ...);
 
     // Add it to the queue and wait for a response, if valid
-    if (rc == SUCCESS) {
+    if (rc == Modbus::Error::SUCCESS) {
       return syncRequestM(m, token);
     } 
     // Else return the error as a message
@@ -76,14 +79,14 @@ public:
   // matching ModbusMessage::setMessage() call
   template <typename... Args>
   Error addRequest(uint32_t token, Args&&... args) {
-    Error rc = SUCCESS;        // Return value
+    Error rc = Modbus::Error::SUCCESS;        // Return value
 
     // Create request, if valid
     ModbusMessage m;
     rc = m.setMessage(std::forward<Args>(args) ...);
 
     // Add it to the queue, if valid
-    if (rc == SUCCESS) {
+    if (rc == Modbus::Error::SUCCESS) {
       return addRequestM(m, token);
     }
     // Else return the error

@@ -26,8 +26,8 @@ public:
   // WARNING: if parameters are invalid, message will _NOT_ be set up!
   template <typename... Args>
   ModbusMessage(uint8_t serverID, uint8_t functionCode, Args&&... args) { // NOLINT
-    Error e = SUCCESS;
-    if ((e = setMessage(serverID, functionCode, std::forward<Args>(args) ...)) != SUCCESS) {
+    Error e = Modbus::Error::SUCCESS;
+    if ((e = setMessage(serverID, functionCode, std::forward<Args>(args) ...)) != Modbus::Error::SUCCESS) {
       printError(__FILE__, __LINE__, e, serverID, functionCode);
     }
   }

@@ -40,6 +40,15 @@ const unsigned int CLIENT_TASK_STACK = 4096;
 #define NEED_UART_PATCH 0
 const unsigned int SERVER_TASK_STACK = 4096;
 const unsigned int CLIENT_TASK_STACK = 4096;
+#elif defined(STM32H7xx)
+#include <Arduino.h>
+#define USE_MUTEX 1
+#define HAS_FREERTOS 1
+#define HAS_ETHERNET 1
+#define IS_LINUX 0
+#define NEED_UART_PATCH 0
+const unsigned int SERVER_TASK_STACK = 4096;
+const unsigned int CLIENT_TASK_STACK = 4096;
 
 /* === LINUX DEFINITIONS AND MACROS === */
 #elif defined(__linux__)

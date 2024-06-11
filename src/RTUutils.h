@@ -35,13 +35,13 @@ public:
   static bool validCRC(const uint8_t *data, uint16_t len);
 
 // validCRC #2: check the CRC of a block of data against a given one
-  static bool validCRC(const uint8_t *data, uint16_t len, uint16_t CRC);
+  static bool validCRC(const uint8_t *data, uint16_t len, uint16_t _CRC);
 
 // validCRC #1: check the CRC in a message for validity
   static bool validCRC(ModbusMessage msg);
 
 // validCRC #2: check the CRC of a message against a given one
-  static bool validCRC(ModbusMessage msg, uint16_t CRC);
+  static bool validCRC(ModbusMessage msg, uint16_t _CRC);
 
 // addCRC: extend a RTUMessage by a valid CRC
   static void addCRC(ModbusMessage& raw);

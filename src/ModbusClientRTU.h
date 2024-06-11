@@ -89,7 +89,10 @@ protected:
   void isInstance() { return; }   // make class instantiable
   queue<RequestEntry> requests;   // Queue to hold requests to be processed
   #if USE_MUTEX
-  mutex qLock;                    // Mutex to protect queue
+  #if defined(STM32H7xx)
+  #else
+  mutex qLock;         
+  #endif           // Mutex to protect queue
   #endif
   Stream *MR_serial;              // Ptr to the serial interface used
   unsigned long MR_lastMicros;    // Microseconds since last bus activity

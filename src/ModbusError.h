@@ -13,7 +13,7 @@ public:
   // Constructor with error code
   inline explicit ModbusError(Error e) : err(e) {}
   // Empty constructor defaults to 0
-  inline ModbusError() : err(SUCCESS) {}
+  inline ModbusError() : err(Modbus::Error::SUCCESS) {}
   // Assignment operators
   inline ModbusError& operator=(const ModbusError& e) { err = e.err; return *this; }
   inline ModbusError& operator=(const Error e) { err = e; return *this; }
@@ -39,91 +39,91 @@ private:
 // Return error as static text
   inline static const char *getText(Error err) {
     switch (err) {
-    case SUCCESS               : // 0x00,
+    case Modbus::Error::SUCCESS               : // 0x00,
       return "Success";
       break;
-    case ILLEGAL_FUNCTION      : // 0x01,
+    case Modbus::Error::ILLEGAL_FUNCTION      : // 0x01,
       return "Illegal function code";
       break;
-    case ILLEGAL_DATA_ADDRESS  : // 0x02,
+    case Modbus::Error::ILLEGAL_DATA_ADDRESS  : // 0x02,
       return "Illegal data address";
       break;
-    case ILLEGAL_DATA_VALUE    : // 0x03,
+    case Modbus::Error::ILLEGAL_DATA_VALUE    : // 0x03,
       return "Illegal data value";
       break;
-    case SERVER_DEVICE_FAILURE : // 0x04,
+    case Modbus::Error::SERVER_DEVICE_FAILURE : // 0x04,
       return "Server device failure";
       break;
-    case ACKNOWLEDGE           : // 0x05,
+    case Modbus::Error::ACKNOWLEDGE           : // 0x05,
       return "Acknowledge";
       break;
-    case SERVER_DEVICE_BUSY    : // 0x06,
+    case Modbus::Error::SERVER_DEVICE_BUSY    : // 0x06,
       return "Server device busy";
       break;
-    case NEGATIVE_ACKNOWLEDGE  : // 0x07,
+    case Modbus::Error::NEGATIVE_ACKNOWLEDGE  : // 0x07,
       return "Negative acknowledge";
       break;
-    case MEMORY_PARITY_ERROR   : // 0x08,
+    case Modbus::Error::MEMORY_PARITY_ERROR   : // 0x08,
       return "Memory parity error";
       break;
     case GATEWAY_PATH_UNAVAIL  : // 0x0A,
       return "Gateway path unavailable";
       break;
-    case GATEWAY_TARGET_NO_RESP: // 0x0B,
+    case Modbus::Error::GATEWAY_TARGET_NO_RESP: // 0x0B,
       return "Gateway target not responding";
       break;
-    case TIMEOUT               : // 0xE0,
+    case Modbus::Error::TIMEOUT               : // 0xE0,
       return "Timeout";
       break;
-    case INVALID_SERVER        : // 0xE1,
+    case Modbus::Error::INVALID_SERVER        : // 0xE1,
       return "Invalid server";
       break;
-    case CRC_ERROR             : // 0xE2, // only for Modbus-RTU
+    case Modbus::Error::CRC_ERROR             : // 0xE2, // only for Modbus-RTU
       return "CRC check error";
       break;
-    case FC_MISMATCH           : // 0xE3,
+    case Modbus::Error::FC_MISMATCH           : // 0xE3,
       return "Function code mismatch";
       break;
-    case SERVER_ID_MISMATCH    : // 0xE4,
+    case Modbus::Error::SERVER_ID_MISMATCH    : // 0xE4,
       return "Server ID mismatch";
       break;
-    case PACKET_LENGTH_ERROR   : // 0xE5,
+    case Modbus::Error::PACKET_LENGTH_ERROR   : // 0xE5,
       return "Packet length error";
       break;
-    case PARAMETER_COUNT_ERROR : // 0xE6,
+    case Modbus::Error::PARAMETER_COUNT_ERROR : // 0xE6,
       return "Wrong # of parameters";
       break;
-    case PARAMETER_LIMIT_ERROR : // 0xE7,
+    case Modbus::Error::PARAMETER_LIMIT_ERROR : // 0xE7,
       return "Parameter out of bounds";
       break;
-    case REQUEST_QUEUE_FULL    : // 0xE8,
+    case Modbus::Error::REQUEST_QUEUE_FULL    : // 0xE8,
       return "Request queue full";
       break;
-    case ILLEGAL_IP_OR_PORT    : // 0xE9,
+    case Modbus::Error::ILLEGAL_IP_OR_PORT    : // 0xE9,
       return "Illegal IP or port";
       break;
-    case IP_CONNECTION_FAILED  : // 0xEA,
+    case Modbus::Error::IP_CONNECTION_FAILED  : // 0xEA,
       return "IP connection failed";
       break;
-    case TCP_HEAD_MISMATCH     : // 0xEB,
+    case Modbus::Error::TCP_HEAD_MISMATCH     : // 0xEB,
       return "TCP header mismatch";
       break;
-    case EMPTY_MESSAGE         : // 0xEC,
+    case Modbus::Error::EMPTY_MESSAGE         : // 0xEC,
       return "Incomplete request";
       break;
-    case ASCII_FRAME_ERR       : // 0xED,
+    case Modbus::Error::ASCII_FRAME_ERR       : // 0xED,
       return "Invalid ASCII frame";
       break;
-    case ASCII_CRC_ERR         : // 0xEE,
+    case Modbus::Error::ASCII_CRC_ERR         : // 0xEE,
       return "Invalid ASCII CRC";
       break;
-    case ASCII_INVALID_CHAR    : // 0xEF,
+    case Modbus::Error::ASCII_INVALID_CHAR    : // 0xEF,
       return "Invalid ASCII character";
       break;
-    case BROADCAST_ERROR       : // 0xF0,
+    case Modbus::Error::BROADCAST_ERROR       : // 0xF0,
       return "Broadcast data invalid";
       break;
-    case UNDEFINED_ERROR       : // 0xFF  // otherwise uncovered communication error
+    case Modbus::Error::UNDEFINED_ERROR       : // 0xFF  // otherwise uncovered communication error
     default:
       return "Unspecified error";
       break;
