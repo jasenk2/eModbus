@@ -82,6 +82,8 @@ typedef std::chrono::steady_clock clk;
 #define LOCK_GUARD(x,y) std::lock_guard<std::mutex> x(y);
 #elif defined(PICO_RP2040)
 #define LOCK_GUARD(x,y) mutex_try_enter(&y, nullptr)
+#elif defined(STM32H7xx)
+#define LOCK_GUARD(x,y)  __gthread_mutex_trylock(&y,nullptr)
 #endif
 #else
 #define LOCK_GUARD(x,y)

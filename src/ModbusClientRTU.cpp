@@ -79,6 +79,10 @@ void ModbusClientRTU::begin(HardwareSerial& serial, int coreID) {
     Serial2.setFIFOSize(1);
   }
   serial.begin(baudRate);
+  #elif defined(STM32H7xx)
+  serial.end();
+  uint32_t baudRate = 9600;
+  serial.begin(baudRate);
   #endif
   doBegin(baudRate, coreID);
 }
@@ -163,7 +167,7 @@ uint32_t ModbusClientRTU::pendingRequests() {
 
 // Base addRequest taking a preformatted data buffer and length as parameters
 Error ModbusClientRTU::addRequestM(ModbusMessage msg, uint32_t token) {
-  Error rc = SUCCESS;        // Return value
+  Error rc = Modbus::Error::SUCCESS;        // Return value
 
   LOG_D("request for %02X/%02X\n", msg.getServerID(), msg.getFunctionCode());
 
@@ -201,7 +205,7 @@ ModbusMessage ModbusClientRTU::syncRequestM(ModbusMessage msg, uint32_t token) {
 
 // addBroadcastMessage: create a fire-and-forget message to all servers on the RTU bus
 Error ModbusClientRTU::addBroadcastMessage(const uint8_t *data, uint8_t len) {
-  Error rc = SUCCESS;        // Return value
+  Error rc = Modbus::Error::SUCCESS;        // Return value
 
   LOG_D("Broadcast request of length %d\n", len);
 
@@ -311,7 +315,7 @@ void ModbusClientRTU::handleConnection(ModbusClientRTU *instance) {
         HEXDUMP_V("Response packet", response.data(), response.size());
 
         // If we got an error, count it
-        if (response.getError() != SUCCESS) {
+        if (response.getError() != Modbus::Error::SUCCESS) {
           instance->errorCount++;
         }
   
@@ -329,7 +333,7 @@ void ModbusClientRTU::handleConnection(ModbusClientRTU *instance) {
         } else {
           // No, but we may have onData or onError handlers
           // Did we get a normal response?
-          if (response.getError()==SUCCESS) {
+          if (response.getError()==Modbus::Error::SUCCESS) {
             // Yes. Do we have an onData handler registered?
             if (instance->onData) {
               // Yes. call it

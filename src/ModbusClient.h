@@ -124,6 +124,9 @@ protected:
 #elif defined(PICO_RP2040)
   mutex  syncRespM;            // Mutex protecting syncResponse map against race conditions
   mutex  countAccessM;         // Mutex protecting access to the message and error counts
+#elif defined(STM32H7xx)
+   __gthread_mutex_t syncRespM;            // Mutex protecting syncResponse map against race conditions
+   __gthread_mutex_t countAccessM;         // Mutex protecting access to the message and error counts
 #endif
 #endif
   // Let any ModbusBridge class use protected members

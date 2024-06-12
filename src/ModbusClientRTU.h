@@ -90,6 +90,7 @@ protected:
   queue<RequestEntry> requests;   // Queue to hold requests to be processed
   #if USE_MUTEX
   #if defined(STM32H7xx)
+  pthread_mutex_t qLock;
   #else
   mutex qLock;         
   #endif           // Mutex to protect queue
