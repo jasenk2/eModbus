@@ -102,9 +102,9 @@ void ModbusClientRTU::doBegin(uint32_t baudRate, int coreID) {
   snprintf(taskName, 18, "Modbus%02XRTU", instanceCounter);
   // Start task to handle the queue
 #if defined(ESP32)
-  xTaskCreatePinnedToCore((TaskFunction_t)&handleConnection, taskName, CLIENT_TASK_STACK, this, 6, &worker, coreID >= 0 ? coreID : NULL);
+  xTaskCreatePinnedToCore((TaskFunction_t)&handleConnection, taskName, CLIENT_TASK_STACK, this, (configMAX_PRIORITIES-1), &worker, coreID >= 0 ? coreID : NULL);
 #elif defined(PICO_RP2040)
-  xTaskCreateAffinitySet((TaskFunction_t)&handleConnection, taskName, CLIENT_TASK_STACK, this, 6, coreID >= 0 ? coreID : NULL, &worker);
+  xTaskCreateAffinitySet((TaskFunction_t)&handleConnection, taskName, CLIENT_TASK_STACK, this, (configMAX_PRIORITIES-1), coreID >= 0 ? coreID : NULL, &worker);
 #endif  
 
   LOG_D("Client task %d started. Interval=%d\n", (uint32_t)worker, MR_interval);
