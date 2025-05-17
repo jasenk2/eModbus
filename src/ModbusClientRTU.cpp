@@ -66,7 +66,7 @@ void ModbusClientRTU::begin(HardwareSerial& serial, int coreID) {
   #if defined(ESP32)
   serial.setRxFIFOFull(1);
   uint32_t baudRate = serial.baudRate();
-  #elif defined(PICO_RP2040)
+  #elif defined(PICO_RP2040) || defined(PICO_RP2350)
   serial.end();
   uint32_t baudRate = 9600;
   

@@ -4,7 +4,7 @@
 // =================================================================================================
 
 #include "ModbusServerTCPasync.h"
-#ifndef PICO_RP2040
+#ifndef ARDUINO_ARCH_RP2040
 #define LOCAL_LOG_LEVEL LOG_LEVEL_VERBOSE
 // #undef LOCAL_LOG_LEVEL
 #include "Logging.h"

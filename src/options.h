@@ -5,8 +5,11 @@
 #ifndef _EMODBUS_OPTIONS_H
 #define _EMODBUS_OPTIONS_H
 #if defined(ARDUINO_ARCH_RP2040) && !defined(__MBED__)
-#ifndef PICO_RP2040 
+
+#if  !defined(PICO_RP2040) && !defined(ARDUINO_RP2350) 
 #define PICO_RP2040 1
+#elif defined(ARDUINO_RP2350)
+#define PICO_RP2350 1
 #endif
 #endif
 
@@ -31,7 +34,7 @@ const unsigned int CLIENT_TASK_STACK = 4096;
 #define NEED_UART_PATCH 0
 
 /* === PICO2040 DEFINITIONS AND MACROS === */
-#elif defined(PICO_RP2040)
+#elif defined(PICO_RP2040) || defined(PICO_RP2350)
 #include <Arduino.h>
 #define USE_MUTEX 1
 #define HAS_FREERTOS 1
@@ -80,7 +83,7 @@ typedef std::chrono::steady_clock clk;
 #if USE_MUTEX
 #ifdef ESP32
 #define LOCK_GUARD(x,y) std::lock_guard<std::mutex> x(y);
-#elif defined(PICO_RP2040)
+#elif defined(PICO_RP2040) || defined(PICO_RP2350)
 #define LOCK_GUARD(x,y) mutex_try_enter(&y, nullptr)
 #elif defined(STM32H7xx)
 #define LOCK_GUARD(x,y)  __gthread_mutex_trylock(&y,nullptr)

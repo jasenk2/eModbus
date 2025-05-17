@@ -19,7 +19,7 @@ extern "C" {
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 }
-#elif defined(PICO_RP2040)
+#elif defined(PICO_RP2040) || defined(PICO_RP2350)
 #include <FreeRTOS.h>
 #include <task.h>
 #endif

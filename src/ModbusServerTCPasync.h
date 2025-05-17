@@ -15,7 +15,7 @@
 #include <vector>
 
 #include <Arduino.h>  // for millis()
-#ifndef PICO_RP2040
+#ifndef  ARDUINO_ARCH_RP2040
 #if defined(ESP32)
 #include <AsyncTCP.h>
 #elif defined(ESP8266)

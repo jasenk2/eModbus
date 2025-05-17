@@ -16,7 +16,7 @@ extern "C" {
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 }
-#elif defined(PICO_RP2040)
+#elif defined(PICO_RP2040) || defined(PICO_RP2350)
 #include <FreeRTOS.h>
 #include <task.h>
 #elif defined(STM32H7xx)
@@ -121,7 +121,7 @@ protected:
 #if defined(ESP32)
   std::mutex syncRespM;            // Mutex protecting syncResponse map against race conditions
   std::mutex countAccessM;         // Mutex protecting access to the message and error counts
-#elif defined(PICO_RP2040)
+#elif defined(PICO_RP2040) || defined(PICO_RP2350)
   mutex  syncRespM;            // Mutex protecting syncResponse map against race conditions
   mutex  countAccessM;         // Mutex protecting access to the message and error counts
 #elif defined(STM32H7xx)
